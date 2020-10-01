@@ -1,0 +1,37 @@
+#include "Adafruit_Keypad.h"
+#define KEYPAD_PID3845
+#define R1    11
+#define R2    10
+#define R3    9
+#define R4    8
+#define C1    7
+#define C2    6
+#define C3    5
+#define C4
+#include "keypad_config.h" //This is in the second tab since it doesnt download it with the function
+Adafruit_Keypad keypad = Adafruit_Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+const int led = 37;
+void setup() {
+  Serial.begin(9600);
+  keypad.begin();
+}
+
+void loop() {
+  keypad.tick();
+  while (keypad.available()) {
+    keypadEvent e = keypad.read();
+    Serial.print((char)e.bit.KEY);
+    if (e.bit.EVENT == KEY_JUST_PRESSED) {
+      Serial.println(" pressed");
+      if (e.bit.EVENT == "5"){
+      Serial.println(" this should work but it dosent");
+      digitalWrite(led, HIGH);
+      delay(1000); 
+      }
+    }
+    else if (e.bit.EVENT == KEY_JUST_RELEASED) {
+      Serial.println(" released");
+    }
+    delay(10);
+  }
+}
